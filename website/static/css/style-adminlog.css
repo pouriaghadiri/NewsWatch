@@ -1,0 +1,32 @@
+ul#myTab{
+    display: flex;
+    justify-content: center;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+    background-color: transparent;
+    border-color: #dee2e6 #dee2e6 #f4f4f2;
+}
+.ck.ck-editor__editable_inline[dir=ltr] {
+    text-align: right !important;
+    direction: rtl;
+}
+.ck.ck-editor__top.ck-reset_all{
+    direction: rtl;
+
+}
+.content{
+    min-height: 340px;
+}
+select{
+    margin-top: 15px;
+    padding: 7px 25px;
+    border-radius: 5px;
+}
+.addbtn{
+    padding: 10px 15px;
+    background-color: #31acbe;
+    color: #fefefe;
+    border-radius: 5px;
+    border: none;
+    margin: 10px;
+}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main %}
+<link rel="stylesheet" href="{% static "css/style-detail.css" %} " type="text/css " >
+
+<div class="main-content"> <!-- main content -->
+        <div class="container">
+            {% comment %}<div class="detail-head-pic position-relative">
+                <img src="{{ post.image }}" class="w-100">
+                <h1>{{ post.title }}</h1>
+            </div>{% endcomment %}
+            <div class="main-detail">
+                <div class="container-fluid">
+                    <img src="{{ post.image }}" class="m-2 border-radius">
+                    <div class="detail-news">
+                        <h2>{{ post.title }}</h2>
+                        {{ post.body | safe}}
+                       <p class="view-counter"> <i class="fa fa-bullseye"></i> تعداد بازدید : {{ post.view_count }}</p>
+
+                    </div>
+                </div>
+            </div>
+        </div><!-- end container -->
+    </div> <!-- end main content -->
+{% endblock %}

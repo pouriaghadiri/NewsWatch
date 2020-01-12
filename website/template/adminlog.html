@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main %}
+<link rel="stylesheet" href="{% static "css/style-adminlog.css" %} " type="text/css " >
+
+
+<div class="content mt-3 container">
+    <h4 class="text-center">مدیریت محتوای خبر ها</h4>
+   <div class="row mt-3">
+      <div class="col-12">
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                  <a class="nav-link active" id="add-tab" data-toggle="tab" href="#add" role="tab" aria-controls="add" aria-selected="true">اضافه کردن خبر</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" id="report-tab" data-toggle="tab" href="#report" role="tab" aria-controls="report" aria-selected="false">گزارش خبر</a>
+              </li>
+
+          </ul>
+          <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
+                  <div class="text-center ">
+                  <div class="m-4"></div>
+                      <form method="post" action="/manage/">
+                      {% csrf_token %}
+                          <select name="category">
+                          {% for cat in root_categories %}
+                            <option>{{cat}}</option>
+                          {% endfor %}
+                            </select><br>
+
+                          <input style="padding: 10px; margin: 10px;width: 50%;border-radius: 5px; border: none; box-shadow: 0 0 7px 1px #ccc" name="title" type="text" placeholder="عنوان خبر را وارد کنید"><br>
+                          <input style="padding: 10px;margin: 10px; width: 50%;border-radius: 5px; border: none; box-shadow: 0 0 7px 1px #ccc" name="image" type="text" placeholder="آدرس عکس را وارد کنید"><br>
+                          <textarea name="body" id="body" placeholder="متن خبر را وارد کنید"></textarea>
+                          <button type="submit" class="addbtn">ثبت</button>
+                      </form>
+                  </div>
+              </div>
+              <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="report-tab">
+                  <div class="text-center m-5">
+                      <form method="get" action="/edit/">
+                          <span>آی دی صفحه برای ویرایش را وارد نمایید: </span>
+                          <input name="news_id" type="text">
+                          <button type="submit" class="addbtn py-1">بررسی</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+   </div>
+</div>
+
+<!-- Include the ckeditor library -->
+<script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
+
+
+<script>
+
+    ClassicEditor
+        .create( document.querySelector( '#header' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+    ClassicEditor
+    .create( document.querySelector( '#img' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+    editor = ClassicEditor
+        .create( document.querySelector( '#body' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+
+    editor.on( 'change', function( evt ) {
+        document.getElementById('news_text').setAttribute('value', editor.getData());
+        console.log( 'Total bytes: ' + evt.editor.getData().length );
+    });
+</script>
+{% endblock %}

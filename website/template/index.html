@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main %}
+    <div class="main-content">
+        <div class="container">
+            <div class="row"> <!-- 1st row with carousel -->
+                <div class="col-lg-8">
+                    <div class="owl-carousel main-carousel">
+                        {% for post in important_posts_slide_bar %}
+                            <div class="item position-relative">
+                                <a href="{{ post.get_absolute_url }}">
+                                    <img src="{{ post.image }}">
+                                    <div class="carousel-caption">
+                                        {{post.title}}
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="col-lg-4"> <!-- pro section -->
+                    <div class="row ">
+                        {% for post in important_post %}
+                            <div class="col-12 col-sm-6 col-lg-12 mt-2">
+                                <div class="pro-news">
+                                    <a href="{{post.get_absolute_url}}">
+                                        <img src="{{ post.image }}" class="w-100 pro-img">
+                                      <div class="pro-news-caption">
+                                           <h5>{{post.title}}</h5>
+                                      </div>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div> <!-- end pro section -->
+            </div><!-- end 1st row with carousel -->
+
+            <!-- latest news -->
+            <div class="title-section">
+                <h4>آخرین خبرهای</h4>
+                <div class="full-line black"></div>
+            </div>
+            <div class="row top-news">
+            {% for latest_item in latest_news %}
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="top-new-box">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row no-gutters">
+                                <div class="col-5">
+                                    <a href="{{latest_item.get_absolute_url}}"> <img src="{{latest_item.image}}" class="card-img w-100" alt=""></a>
+                                </div>
+                                <div class="col-7 position-relative">
+                                    <div class="card-body">
+                                       <a href="{{latest_item.get_absolute_url}}"> <p class="card-text">{{latest_item.title}}</p> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <!-- end latest news -->
+
+        {% for key, value in latest_news_on_each_category.items %}
+            <div class="title-section">
+                <p>
+                    <a href="category/{{ key }}"> <h4 class="d-inline-block">{{ key }}</h4> </a>{% comment %}<i class="fa fa-caret-left"></i> &nbsp; <a href="#">فوتبال</a> &nbsp; <a href="#">تنیس</a> &nbsp; <a href="#">بسکتبال</a>{% endcomment %}
+                </p>
+                <div class="full-line red"></div>
+            </div>
+            <div class="owl-carousel section-carousel p-3"> <!-- sport section -->
+                {% for post in value %}
+                    <div class="">
+                    <div class="card-deck">
+                        <div class="card pro-card">
+                           <a href="{{post.get_absolute_url}}"> <img class="card-img-top p-2 w-100" src="{{post.image}}" alt="..">
+                            <div class="card-body border-top">
+                                <p class="card-text p-1 pb-2">{{ post.title }}</p>
+                            </div></a>
+                            <div class="card-footer p-1 border-top-0">
+                                <div class=" card-text news-reporter">
+                                    <small class="d-flex p-1">تعداد بازدید: {{ post.view_count }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        </div><!-- end container -->
+    </div><!-- end main content -->
+{% endblock %}

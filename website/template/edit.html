@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main %}
+<link rel="stylesheet" href="{% static "css/style-adminlog.css" %} " type="text/css " >
+
+
+<div class="content mt-3 container">
+    <h4 class="text-center">ویرایش خبر</h4>
+   <div class="row mt-3">
+      <div class="col-12">
+          <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="add" role="tabpanel" aria-labelledby="add-tab">
+                  <div class="text-center ">
+                  <div class="m-4"></div>
+                      <form method="post" action="/edit/">
+                      {% csrf_token %}
+                          <select name="category">
+                          {% for cat in root_categories %}
+                            <option{% if post and post.root_category == cat %} selected="selected" {% endif %}>{{cat}}</option>
+                          {% endfor %}
+                            </select><br>
+                            <input type="hidden" name="id" value="{{ post.id }}"><br>
+                          <input style="padding: 10px; margin: 10px;width: 50%;border-radius: 5px; border: none; box-shadow: 0 0 7px 1px #ccc" name="title" type="text" placeholder="عنوان خبر را وارد کنید" {% if post %}value="{{ post.title }}" {% endif %}><br>
+                          <input style="padding: 10px; margin: 10px;width: 50%;border-radius: 5px; border: none; box-shadow: 0 0 7px 1px #ccc" name="image" type="text" placeholder="آدرس عکس را وارد کنید" {% if post %}value="{{ post.image }}" {% endif %}><br>
+                          <textarea name="body" id="body" placeholder="متن خبر را وارد کنید">{% if post %}{{ post.body }}" {% endif %} </textarea>
+                          <button type="submit" class="addbtn">ثبت</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+   </div>
+</div>
+
+<!-- Include the ckeditor library -->
+<script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
+
+
+<script>
+
+    ClassicEditor
+        .create( document.querySelector( '#header' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+    ClassicEditor
+    .create( document.querySelector( '#img' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+    editor = ClassicEditor
+        .create( document.querySelector( '#body' ) )
+        .catch( error => {
+            console.error( error );
+        } );
+
+    editor.on( 'change', function( evt ) {
+        document.getElementById('news_text').setAttribute('value', editor.getData());
+        console.log( 'Total bytes: ' + evt.editor.getData().length );
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main %}
+    <div class="main-content">
+        <div class="container">
+            <!-- latest news -->
+            <div class="title-section">
+                <span style="font-weight: bold; font-size: larger">نتیجه‌ی جست‌وجو برای: </span><span>{{ query }}</span>
+                <div class="full-line black"></div>
+            </div>
+            <div class="row top-news">
+            {% for post in posts %}
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="top-new-box">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row no-gutters">
+                                <div class="col-5">
+                                    <a href="{{post.get_absolute_url}}"> <img src="{{post.image}}" class="card-img w-100" alt=""></a>
+                                </div>
+                                <div class="col-7 position-relative">
+                                    <div class="card-body">
+                                       <a href="{{post.get_absolute_url}}"> <p class="card-text">{{post.title}}</p> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+        {% block pagination %}
+            {% if is_paginated %}
+                <div class="row">
+                    <div class="col-12 ">
+                        <div class="pagination d-block text-center p-4">
+                    <span class="page-links ">
+
+                        {% if page_obj.has_next %}
+                            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}&q={{ query }}"><i class="fa fa-arrow-alt-circle-right"></i></a>
+                        {% endif %}
+                        <span class="page-current">
+                             صفحه  {{ page_obj.number }} از {{ page_obj.paginator.num_pages  }}
+                        </span>
+                        {% if page_obj.has_previous %}
+                            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}&q={{ query }}"><i class="fa fa-arrow-alt-circle-left"></i></a>
+                        {% endif %}
+                    </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+          {% endblock %}
+
+            <!-- end latest news -->
+        </div><!-- end container -->
+    </div><!-- end main content -->
+{% endblock %}

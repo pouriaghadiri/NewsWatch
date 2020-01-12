@@ -1,0 +1,281 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "/css/bootstrap.min.css" %}" type="text/css " >
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static "css/owl.carousel.min.css" %}" type="text/css " >
+    <link rel="stylesheet" href="{% static "css/style.css" %} " type="text/css " >
+
+
+    <title>سایت خبری</title>
+
+</head>
+<body dir="rtl">
+    <div id="my-header" class="fstHeader">
+        <div class="container ">
+           <div class="row">
+               <div class="col-6  col-md-3 col-lg-2 settingSection">
+                   <a href="/"> <i class="fa fa-home"></i> </a>
+           &nbsp;&nbsp;&nbsp;
+                   {% if user.is_authenticated %}
+                    <button type="button"  data-toggle="modal" data-target="#choose-modal" data-whatever="@mdo">  <i class="fa fa-cog"></i> </button>
+                       <a href="/logout/"><button type="button">خروج</button></a>
+                       {% if user.is_staff %}
+                           <a href="/manage/"><button type="button">مدیریت</button></a>
+                       {% endif %}
+                    {% else %}
+                    <button type="button"  data-toggle="modal" data-target="#signup-modal" data-whatever="@mdo">  ثبت نام </button> /
+                   <button type="button"  data-toggle="modal" data-target="#login-modal" data-whatever="@mdo">  ورود </button>
+                {% endif %}
+
+
+               </div>
+               <div class="col-12 col-md-6 col-lg-8 searchBox">
+                   <form action="/search">
+                       <input type="text" name="q" placeholder="در این سایت با خیال راحت جستجو کنید ...">
+                       <button>جستجو</button>
+                   </form>
+               </div>
+               <div class="col-6 col-md-3 col-lg-2 logo">
+                   <img src="{% static "img/logo.png" %}" class="w-100">
+               </div>
+           </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="scndHeader container">
+            <div class="row">
+                <div class="d-none d-lg-block col-lg-1"></div>
+                <div class="col-12 col-lg-10">
+                    <div class="owl-rtl owl-carousel menu-carousel">
+                        {% for root_category in root_categories %}
+                        <a href="/category/{{ root_category }}">{{ root_category }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="d-none d-lg-block col-lg-1"></div>
+
+            </div>
+            <div class="ad-1">
+
+            </div>
+    </div>
+    <!-- sign up modal -->
+    <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">فرم ثبت نام</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <form method="post" action="/signup/">
+                                {% csrf_token %}
+                                <label for="username" class="col-form-label">نام کاربری*: </label>
+                                <input name="username" type="text" class="form-control" id="username">
+                                <label for="pass" class="col-form-label">پسورد*: </label>
+                                <input name="password" type="password" class="form-control" id="pass">
+                                <label for="name" class="col-form-label">نام*: </label>
+                                <input name="first_name" type="text" class="form-control" id="name">
+                                <label for="f-name" class="col-form-label">نام خانوادگی*: </label>
+                                <input name="last_name" type="text" class="form-control" id="f-name">
+                                <label for="email" class="col-form-label">ایمیل*: </label>
+                                <input name="email" type="text" class="form-control" id="email">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">ثبت نام</button>
+                                </div>
+                            </form>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+    <!-- login modal -->
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">صفحه ی ورود</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                        <div class="form-group">
+                            <form method="post" action="/login/">
+                                {% csrf_token %}
+                                <label for="usr" class="col-form-label">نام کاربری*: </label>
+                                <input name="username" type="text" class="form-control" id="usr">
+                                <label for="pass" class="col-form-label">رمز عبور*: </label>
+                                <input name="password" type="password" class="form-control" id="password">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">ورود</button>
+                                </div>
+                            </form>
+
+                        </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->
+    <!-- choose modal -->
+
+    {% if user.is_authenticated %}
+
+        <div class="modal fade" id="choose-modal" tabindex="-1" role="dialog" aria-labelledby="chooseModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chooseModalLabel">شخصی سازی صفحه </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form method="post" action="/personalize/">
+                {% csrf_token %}
+                    <div class="row">
+                        {% for cats in choose_categories %}
+                            <div class="col-6">
+                            <div class="custom-control custom-checkbox my-1 mr-sm-2 ">
+                                {% for cat in cats %}
+                                    <div>
+                                        <input {% if cat in selected_categories %}checked="checked"{% endif %} name="selected_categories" type="checkbox" class="custom-control-input" id="{{ cat }}" value="{{ cat }}">
+                                        <label class="custom-control-label" for="{{cat}}">{{ cat }}</label>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </div>
+                </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endif%}
+
+    <!-- end modal -->
+
+
+
+    {% block main %}
+    {% endblock %}
+
+
+    <footer>
+        <div class="row">
+            <div class="col-lg-3">
+                <h5>درباره ی ما: </h5>
+                <p>
+                    این سایت د جهت آگاهی بیشتر افراد از آخرین خبر ها از تمام خبر گذاری های سطح دنیا می باشد که ما در جهت آن بر آمدیم تا بیشترین کمک را به شما داشته باشیم. از این جهت که مارا همراهی میکنید بسیار خوشحال هستیم.
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <h5>دسترسی سریع: </h5>
+                <div class="row fast-links">
+                    {% for cats in footer_categories %}
+                        <div class="col-4">
+                            {% for cat in cats %}
+                            <a href="/category/{{ cat }}/">
+                                <h6><i class="fa fa-caret-left"> </i> {{cat}} </h6>
+                            </a>
+                            {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <h5> راه های ارتباطی با ما:</h5>
+                <div class="contact-us scale11">
+                    <a href="https://github.com/hoseinalirezaee/"> <img width="64px" src="{% static "img/github.png"%}"></a>
+                    <a href="https://gitlab.com/hoseinalirezaee/"> <img width="64px" src="{% static "img/gitlab.png"%}"></a>
+                    <a href="mailto:hoseinalirezaee128@outlook.com"> <img width="64px" src="{% static "img/email.png"%}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyrights">
+            &copy; تمام حقوق مادی و معنوی این ایت متعلق به شرکت برنامه نویسی سخت جویان شمال و شمال شرق می باشد
+        </div>
+    </footer>
+
+
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script> -->
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "js/owl.carousel.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+    <script>
+
+    $(document).ready(function(){
+        $(".menu-carousel").owlCarousel({
+            autoWidth: true,
+            margin:20,
+            rtl: true,
+            nav: true
+
+        });
+        $(".main-carousel").owlCarousel({
+
+            rtl: true,
+            nav: true,
+            dots: true,
+            autoplay:true,
+            items:1,
+            autoplaySpeed: 2000,
+            autoplayTimeout: 9000,
+
+        });
+        $(".section-carousel").owlCarousel({
+            rtl: true,
+            nav: true,
+            items:4,
+            margin:30,
+            autoplaySpeed: 2000,
+            autoplayTimeout: 9000,
+            responsiveClass: true,
+            responsive: {
+                1350:{
+                    items:4
+                },
+                1200:{
+                    items:3
+                },
+                768:{
+                    items:2
+                },
+                0:{
+                    items:1
+                }
+            }
+
+        });
+    });
+
+    </script>
+</body>
+</html>
