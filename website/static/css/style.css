@@ -421,9 +421,14 @@ footer p{
 }
 .contact-us,.apps{
     display: flex;
+    flex-flow: column;
     justify-content: space-around;
     padding: 5px;
     transition: all 0.5s;
+}
+.contact-us img{
+    width: 50px;
+    margin-right: 7px;
 }
 
 .scale11 img:hover{
